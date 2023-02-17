@@ -1,0 +1,42 @@
+spring:
+  servlet:
+    multipart:
+      # 总文件大小
+      max-request-size: 1GB
+      #单文件大小
+      max-file-size: 1GB
+
+project-file-path:
+  # 文件上传到哪里
+  upload: D:\上传
+  # 文件下载的目录
+  download: D:\下载
+logging:
+  file:
+    # 输出的log文件名
+    name: slf4j-test
+    # 输出的文件的路径
+    path: ./logs
+    # 限制日志文件的大小
+    max-size: 10MB
+    # 日志的保存天数
+    max-history: 7
+  level:
+    # 输出级别
+    root: info
+  # xml配置文件
+  config: classpath:/config/logback-spring.xml
+
+
+server:
+  # 端口号
+  port: 8080
+
+
+fileServer:
+  # 是否开启上传
+  upload: true
+  # 是否开启下载
+  download: true
+
+setAnnouncement: 公告内容
