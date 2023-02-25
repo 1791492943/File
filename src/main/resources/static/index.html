@@ -5,8 +5,12 @@
     <title>网盘</title>
     <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
     <style>
-        span{
+        span,img{
             cursor:pointer;
+        }
+        img{
+            width: 13px;
+            height: 13px;
         }
     </style>
 </head>
@@ -39,7 +43,15 @@
                     label="文件名"
                     fit="true">
                 <template slot-scope="scope">
-                    <span>{{scope.row.name}}</span>
+                    <span><img v-if="scope.row.name.endsWith('.zip') || scope.row.name.endsWith('.rar') || scope.row.name.endsWith('.7z') " src="./img/zip.png">
+                    <img v-else-if="scope.row.name.endsWith('.jar')" src="./img/jar.png">
+                    <img v-else-if="scope.row.name.endsWith('.png') || scope.row.name.endsWith('.jpg') || scope.row.name.endsWith('.jpeg')" src="./img/png.png">
+                    <img v-else-if="scope.row.name.endsWith('.mp4') || scope.row.name.endsWith('avi') || scope.row.name.endsWith('.wmv') || scope.row.name.endsWith('.mpeg')" src="./img/mp4.png">
+                    <img v-else-if="scope.row.name.endsWith('.txt')" src="./img/txt.png">
+                    <img v-else-if="scope.row.name.endsWith('.exe')" src="./img/exe.png">
+                    <img v-else-if="scope.row.directoryYN == false" src="./img/null.png">
+                    <img v-else src="./img/file.png">
+                    {{scope.row.name}}</span>
                 </template>
             </el-table-column>
             <el-table-column
