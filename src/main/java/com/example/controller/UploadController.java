@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * 上传文件
@@ -28,7 +27,6 @@ public class UploadController {
     public void upload(MultipartFile file, HttpServletRequest request) throws IOException {
         log.info("{} 上传文件 {} 大小 {} 到目录 {} ", Utils.getIp(request), file.getOriginalFilename(), Utils.byteConversion(file.getSize()), this.path);
         String originalFilename = file.getOriginalFilename();
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileName = Utils.getIp(request) + "-" +originalFilename;
         file.transferTo(new File(this.path + "/" + fileName));
     }

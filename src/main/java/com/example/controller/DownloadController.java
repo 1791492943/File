@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.common.R;
 import com.example.util.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +26,9 @@ public class DownloadController {
     /**
      * 请求下载文件
      * @param filePath
+     * @param request
+     * @param response
+     * @throws IOException
      */
     @GetMapping
     public void list(String filePath, HttpServletRequest request, HttpServletResponse response) throws IOException {

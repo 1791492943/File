@@ -12,17 +12,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class Utils {
-
-    @Value("${project-file-path.download}")
-    private static String filePath;
 
     /**
      * 字节转换单位
@@ -36,7 +31,7 @@ public class Utils {
         int MB = 1024 * 1024;//定义MB的计算常量
         int KB = 1024;//定义KB的计算常量
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
-        String resultSize = "";
+        String resultSize;
         if (size / GB >= 1) {
             //如果当前Byte的值大于等于1GB
             resultSize = df.format(size / (float) GB) + "GB";

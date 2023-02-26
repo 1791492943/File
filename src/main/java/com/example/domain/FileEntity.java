@@ -1,10 +1,8 @@
 package com.example.domain;
 
 import com.example.util.Utils;
-import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 @Getter
@@ -31,11 +29,6 @@ public class FileEntity {
 
     public void setDirectoryName(String directoryName) {
         assignment(directoryName);
-    }
-
-    public FileEntity byFilePathGetFileEntity(String directoryName) {
-        assignment(directoryName);
-        return this;
     }
 
     private void assignment(String directoryName) {
