@@ -5,10 +5,11 @@
     <title>网盘</title>
     <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
     <style>
-        span,img{
-            cursor:pointer;
+        span, img {
+            cursor: pointer;
         }
-        img{
+
+        img {
             width: 13px;
             height: 13px;
         }
@@ -20,8 +21,14 @@
     <el-button type="primary" @click="dialogVisible = true">上传文件</el-button>
     <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
     <span> {{announcement}} </span>
-    <br>
-    <br>
+    <br> <br>
+    <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
+        <input v-model="fuzzyQueriesVariable" type="text" autocomplete="off" placeholder="搜索" class="el-input__inner">
+        <span class="el-input__prefix">
+            <i class="el-input__icon el-icon-search" @click="fuzzyQueries(fuzzyQueriesVariable)" style="cursor: pointer;"></i>
+        </span>
+    </div>
+    <br v-if="this.num > 0"> <br v-if="this.num > 0">
     <div v-if="this.num > 0">
         <el-row>
             <el-button @click="selectRoot" size="mini" round>首页</el-button>
@@ -43,10 +50,14 @@
                     label="文件名"
                     fit="true">
                 <template slot-scope="scope">
-                    <span><img v-if="scope.row.name.endsWith('.zip') || scope.row.name.endsWith('.rar') || scope.row.name.endsWith('.7z') " src="./img/zip.png">
+                    <span><img
+                            v-if="scope.row.name.endsWith('.zip') || scope.row.name.endsWith('.rar') || scope.row.name.endsWith('.7z') "
+                            src="./img/zip.png">
                     <img v-else-if="scope.row.name.endsWith('.jar')" src="./img/jar.png">
-                    <img v-else-if="scope.row.name.endsWith('.png') || scope.row.name.endsWith('.jpg') || scope.row.name.endsWith('.jpeg')" src="./img/png.png">
-                    <img v-else-if="scope.row.name.endsWith('.mp4') || scope.row.name.endsWith('avi') || scope.row.name.endsWith('.wmv') || scope.row.name.endsWith('.mpeg')" src="./img/mp4.png">
+                    <img v-else-if="scope.row.name.endsWith('.png') || scope.row.name.endsWith('.jpg') || scope.row.name.endsWith('.jpeg')"
+                         src="./img/png.png">
+                    <img v-else-if="scope.row.name.endsWith('.mp4') || scope.row.name.endsWith('avi') || scope.row.name.endsWith('.wmv') || scope.row.name.endsWith('.mpeg')"
+                         src="./img/mp4.png">
                     <img v-else-if="scope.row.name.endsWith('.txt')" src="./img/txt.png">
                     <img v-else-if="scope.row.name.endsWith('.exe')" src="./img/exe.png">
                     <img v-else-if="scope.row.directoryYN == false" src="./img/null.png">
@@ -108,10 +119,29 @@
             this.selectRoot()
         },
         methods: {
+            //查询文件
+            fuzzyQueries(fileName){
+                if(fileName == null || fileName.length == 0){
+                    this.selectRoot()
+                    return
+                }
+                axios({
+                    method: "get",
+                    url: "/selectFile/" + this.fuzzyQueriesVariable
+                }).then(resp => {
+                    this.tableData = resp.data.data;
+                    this.num = 1
+                })
+            },
             //返回上一级
-            back(){
-                this.directoryName = this.directoryName.substring(0,this.directoryName.lastIndexOf("/"))
-                if(this.directoryName.length == 2){
+            back() {
+                this.directoryName = this.directoryName.substring(0, this.directoryName.lastIndexOf("/"))
+                if(this.num == 1){
+                    this.selectRoot()
+                    this.num = 0
+                    return
+                }
+                if (this.directoryName.length == 2) {
                     this.directoryName += "/"
                 }
                 axios({
@@ -122,6 +152,7 @@
                     this.tableData = resp.data.data;
                 })
                 this.num--
+                this.fuzzyQueriesVariable = ""
             },
             //点击表格
             clickData(row, event, column) {
@@ -147,6 +178,7 @@
                     this.tableData = resp.data.data.list;
                     this.announcement = resp.data.data.announcement
                 })
+                this.fuzzyQueriesVariable = ""
             },
             /*下载文件*/
             downloadFile(row) {
@@ -164,6 +196,7 @@
                 directoryName: "",
                 num: 0,
                 announcement: "公告",
+                fuzzyQueriesVariable: "",
                 tableData: [{
                     name: "",
                     directory: "",
