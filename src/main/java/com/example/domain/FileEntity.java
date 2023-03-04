@@ -32,6 +32,7 @@ public class FileEntity {
     }
 
     private void assignment(String directoryName) {
+        directoryName = directoryName.replace("\\","/");
         this.name = directoryName.substring(directoryName.lastIndexOf("/")+1);
         this.directory = directoryName.substring(0,directoryName.lastIndexOf("/"));
         this.directoryName = directoryName;
