@@ -73,7 +73,11 @@ public class SelectFileController {
         List<FileEntity> fileEntities = new ArrayList<>();
         Utils.findFileList(new File(this.downloadPath), fileEntities);
         fileEntities = fileEntities.stream()
-                .filter(item -> item.getName().contains(fuzzyQuery))
+                .filter(item -> {
+                    String itemToLow = item.getName().toLowerCase();
+                    String fuzzyQueryToLow = fuzzyQuery.toLowerCase();
+                    return itemToLow.contains(fuzzyQueryToLow);
+                })
                 .collect(Collectors.toList());
         return R.success(fileEntities);
     }
