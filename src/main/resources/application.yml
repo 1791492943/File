@@ -5,6 +5,8 @@ spring:
       max-request-size: 1GB
       #单文件大小
       max-file-size: 1GB
+  profiles:
+    active: dev
 
 project-file-path:
   # 文件上传到哪里
@@ -24,9 +26,6 @@ logging:
   level:
     # 输出级别
     root: info
-  # xml配置文件
-  config: classpath:/config/logback-spring.xml
-
 
 server:
   # 端口号
