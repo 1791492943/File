@@ -14,6 +14,11 @@
             width: 13px;
             height: 13px;
         }
+
+        em {
+            color: red;
+            font-style: normal;
+        }
     </style>
 </head>
 <body>
@@ -51,7 +56,8 @@
                     label="文件名"
                     fit="true">
                 <template slot-scope="scope">
-                    <span><img
+                    <span>
+                        <img
                             v-if="scope.row.name.endsWith('.zip') || scope.row.name.endsWith('.rar') || scope.row.name.endsWith('.7z') "
                             src="./img/zip.png">
                     <img v-else-if="scope.row.name.endsWith('.jar')" src="./img/jar.png">
@@ -63,7 +69,8 @@
                     <img v-else-if="scope.row.name.endsWith('.exe')" src="./img/exe.png">
                     <img v-else-if="scope.row.directoryYN == false" src="./img/null.png">
                     <img v-else src="./img/file.png">
-                    {{scope.row.name}}</span>
+                        <span v-html="scope.row.name"></span>
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
