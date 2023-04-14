@@ -44,5 +44,7 @@ public class FileEntity {
         }
     }
 
-
+    public void setName(String name) {
+        this.name = name;
+    }
 }
