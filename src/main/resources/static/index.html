@@ -27,14 +27,17 @@
         <div>
             <el-button type="primary" @click="dialogVisible = true">上传文件</el-button>
         </div>
+        <div>
+            <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+            <span> {{announcement}} </span>
+        </div>
         <div style="justify-content: flex-end; margin-left: auto">
-            <el-button type="primary" @click="downloadAll()">下载</el-button>
+            <el-button type="primary" @click="downloadAll()">批量下载</el-button>
         </div>
 
     </div>
 
-    <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-    <span> {{announcement}} </span>
+
     <br> <br>
     <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
         <input v-model="fuzzyQueriesVariable" type="text" autocomplete="off" placeholder="搜索" class="el-input__inner">
@@ -152,6 +155,7 @@
             downloadAll(){
                 let a = document.createElement("a")
                 a.href = "/download/zip?path=" + this.downloadList.toString()
+                a.download = "download.zip"
                 a.click()
             },
             //查询文件
