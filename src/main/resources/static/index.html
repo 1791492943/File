@@ -23,8 +23,16 @@
 </head>
 <body>
 <div id="app">
+    <div style="display: flex">
+        <div>
+            <el-button type="primary" @click="dialogVisible = true">上传文件</el-button>
+        </div>
+        <div style="justify-content: flex-end; margin-left: auto">
+            <el-button type="primary" @click="downloadAll()">下载</el-button>
+        </div>
 
-    <el-button type="primary" @click="dialogVisible = true">上传文件</el-button>
+    </div>
+
     <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
     <span> {{announcement}} </span>
     <br> <br>
@@ -51,7 +59,13 @@
         <el-table
                 :data="tableData"
                 @row-click="clickData"
+                @select="clickCheckbox"
+                @select-all="clickCheckbox"
                 style="width: 100%">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
             <el-table-column
                     label="文件名"
                     fit="true">
@@ -127,6 +141,19 @@
             this.selectRoot()
         },
         methods: {
+            // 打勾
+            clickCheckbox(selection, row){
+                this.downloadList = []
+                for (let i = 0; i < selection.length; i++) {
+                    this.downloadList[i] = selection[i].directoryName
+                }
+                console.log(this.downloadList)
+            },
+            downloadAll(){
+                let a = document.createElement("a")
+                a.href = "/download/zip?path=" + this.downloadList.toString()
+                a.click()
+            },
             //查询文件
             fuzzyQueries(fileName){
                 if(fileName == null || fileName.length == 0){
@@ -193,12 +220,15 @@
                 /*                window.open(
                                     "/download?filePath=" + row,"_self"
                                 )*/
-                console.log("下载请求路劲 /download?filePath=" + row)
                 return "/download?filePath=" + row;
             },
+            downloadZip(){
+
+            }
         },
         data() {
             return {
+                downloadList:[],
                 //上传弹窗是否显示
                 dialogVisible: false,
                 directoryName: "",

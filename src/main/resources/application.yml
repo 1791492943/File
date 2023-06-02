@@ -1,18 +1,18 @@
 spring:
   servlet:
     multipart:
-      # 总文件大小
-      max-request-size: 1GB
-      #单文件大小
-      max-file-size: 1GB
-  profiles:
-    active: dev
+      # 单次上传 总文件大小
+      max-request-size: 200GB
+      #单次上传 单文件大小
+      max-file-size: 100GB
 
 project-file-path:
   # 文件上传到哪里
-  upload: D:\上传
+  upload: D:\network-disk
   # 文件下载的目录
-  download: D:\下载
+  download: D:\network-disk
+  # 临时压缩的路径 不能以下载目录开头 否则批量下载时 会重复压缩自身 直到占满整个磁盘
+  temporary: D:\network-disk-temporary
 logging:
   file:
     # 输出的log文件名
@@ -29,8 +29,7 @@ logging:
 
 server:
   # 端口号
-  port: 8080
-
+  port: 80
 
 fileServer:
   # 是否开启上传

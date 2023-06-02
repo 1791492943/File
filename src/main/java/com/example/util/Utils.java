@@ -8,13 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Component
 public class Utils {
@@ -137,6 +137,43 @@ public class Utils {
 
         outputStream.close();
         inputStream.close();
+
+    }
+
+
+    public static void zipConstruct(String filePath, ZipOutputStream zipOutputStream,String legalPath) throws IOException {
+        String replace = filePath.replace("\\", "/");
+        String replace1 = legalPath.replace("\\", "/");
+        if(!replace.startsWith(replace1)) return;
+
+        File file = new File(filePath);
+        // 1.判断是否为目录
+        if (file.isDirectory()) {
+            // 2.是目录
+            // 2.1判断是否为空文件夹，如果是空文件夹，直接添加该文件夹
+            String[] list = file.list();
+            if(list.length == 0){
+                zipOutputStream.putNextEntry(new ZipEntry(filePath + "\\"));
+            }
+            for (String s : file.list()) {
+                // 如果是一个文件夹则递归调用
+                Utils.zipConstruct(filePath + "\\" + s, zipOutputStream, legalPath);
+            }
+        } else {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            String replace2 = filePath.replace("\\", "/");
+            String replace3 = legalPath.replace("\\", "/");
+            String replace4 = replace2.replace(replace3 + "/", "");
+            zipOutputStream.putNextEntry(new ZipEntry(replace4));
+
+            int len;
+            byte[] bytes = new byte[8192];
+            while ((len = fileInputStream.read(bytes)) != -1) {
+                zipOutputStream.write(bytes, 0, len);
+            }
+
+            fileInputStream.close();
+        }
 
     }
 
