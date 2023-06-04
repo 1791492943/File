@@ -16,7 +16,7 @@ project-file-path:
 logging:
   file:
     # 输出的log文件名
-    name: slf4j-test
+    name: slf4j-log
     # 输出的文件的路径
     path: ./logs
     # 限制日志文件的大小

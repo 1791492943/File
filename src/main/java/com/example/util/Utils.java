@@ -5,6 +5,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Component
+@Slf4j
 public class Utils {
 
     /**
@@ -144,7 +146,10 @@ public class Utils {
     public static void zipConstruct(String filePath, ZipOutputStream zipOutputStream,String legalPath) throws IOException {
         String replace = filePath.replace("\\", "/");
         String replace1 = legalPath.replace("\\", "/");
-        if(!replace.startsWith(replace1)) return;
+        if(!replace.startsWith(replace1)) {
+            log.warn("非法的下载请求 {} 已拦截", replace);
+            return;
+        }
 
         File file = new File(filePath);
         // 1.判断是否为目录
@@ -171,7 +176,6 @@ public class Utils {
             while ((len = fileInputStream.read(bytes)) != -1) {
                 zipOutputStream.write(bytes, 0, len);
             }
-
             fileInputStream.close();
         }
 

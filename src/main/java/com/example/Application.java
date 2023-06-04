@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @Slf4j
-public class Test1Application {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Test1Application.class, args);
+		SpringApplication.run(Application.class, args);
 		log.info("项目启动成功...");
 	}
 

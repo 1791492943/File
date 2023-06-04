@@ -1,5 +1,0 @@
-server:
-  # 端口号
-  port: 8083
-
-setAnnouncement: 测试环境
