@@ -11,8 +11,7 @@ project-file-path:
   upload: D:\network-disk
   # 文件下载的目录
   download: D:\network-disk
-  # 临时压缩的路径 不能以下载目录开头 否则批量下载时 会重复压缩自身 直到占满整个磁盘
-  temporary: D:\network-disk-temporary
+
 logging:
   file:
     # 输出的log文件名
