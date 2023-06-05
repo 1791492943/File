@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
@@ -56,55 +57,41 @@ public class DownloadController {
         //get传参 字符串分割成list
         ArrayList<String> list = new ArrayList<>(Arrays.asList(path.split(",")));
 
-        // 创建压缩包文件
-        File file = new File(this.temporaryPath + "\\" + UUID.randomUUID() + ".zip");
-        log.info("用户 \t\t\t {} 请求打包下载文件 {}", Utils.getIp(request), list);
-        log.info("生成压缩包文件 \t {} ", file.getName());
-
         try (
-                //try()中的资源会自动关闭
-                //zip输出流
-                ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(file));
-                //zip输入流
-                BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-                //Servlet输出流
-                ServletOutputStream outputStream = response.getOutputStream();
+                ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(response.getOutputStream()))
         ) {
             for (String s : list) {
-                Utils.zipConstruct(s, zipOutputStream, this.downloadPath);
+                zipDownload(zipOutputStream, s);
             }
-            // 压缩包打包完成。关闭压缩包输出流，不关掉输入流没法读取
-            zipOutputStream.close();
-            log.info("压缩包 \t\t {} \t 打包完毕", file.getName());
-
-            //响应压缩包，并返回大小
-            response.reset();
-            response.setContentType("application/x-zip-compressed");
-            response.addHeader("Content-Length", String.valueOf(file.length()));
-
-            log.info("将压缩包 \t\t {} \t 发送给用户", file.getName());
-            /*int len;
-            byte[] bytes = new byte[8192];
-            while ((len = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, len);
-                outputStream.flush();
-            }*/
-
-            //使用文件拷贝的方式实现下载
-            IOUtils.copy(inputStream, outputStream);
-            log.info("压缩包 \t\t {} \t 发送成功", file.getName());
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            log.info("准备删除压缩包 \t {} ", file.getName());
-            boolean delete = file.delete();
-            if (delete) {
-                log.info("压缩包 \t\t {} \t 删除成功", file.getName());
-            } else {
-                log.error("压缩包 \t\t {} \t 删除失败, 请手动删除压缩包", file.getName());
-            }
         }
 
+    }
+
+    private void zipDownload(ZipOutputStream zipOutputStream, String s) throws IOException {
+        //处理格式
+        s = s.replace("/", "\\");
+        File file = new File(s);
+        if (!file.exists()) return;
+
+        //去掉下载路径，只保留前端所看到的样子
+        String filePathName = s.replace(this.downloadPath + "\\", "");
+
+        if (!file.isDirectory()) {
+            //文件
+            zipOutputStream.putNextEntry(new ZipEntry(filePathName));
+            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(s));
+            IOUtils.copy(inputStream,zipOutputStream);
+            inputStream.close();
+        } else {
+            //目录
+            if (file.list().length == 0) {
+                zipOutputStream.putNextEntry(new ZipEntry(filePathName + "\\"));
+            } else {
+                zipDownload(zipOutputStream, s);
+            }
+        }
     }
 
 }
