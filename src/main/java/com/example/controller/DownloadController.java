@@ -29,9 +29,6 @@ public class DownloadController {
     @Value("${project-file-path.download}")
     private String downloadPath;
 
-    @Value("${project-file-path.temporary}")
-    private String temporaryPath;
-
     /**
      * 请求下载文件
      *
