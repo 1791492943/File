@@ -54,10 +54,20 @@ public class DownloadController {
         //get传参 字符串分割成list
         ArrayList<String> list = new ArrayList<>(Arrays.asList(path.split(",")));
 
+        ArrayList<String> files = new ArrayList<>();
+        for (String s : list) {
+            this.getFileDirectory(s,files);
+        }
+
+        String ip = Utils.getIp(request);
+        log.info("{} 打包下载 {}",ip,files);
+
         try (
-                ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(response.getOutputStream()))
+                ZipOutputStream zipOutputStream = new ZipOutputStream(
+                        new BufferedOutputStream(response.getOutputStream())
+                )
         ) {
-            for (String s : list) {
+            for (String s : files) {
                 zipDownload(zipOutputStream, s);
             }
         } catch (Exception e) {
@@ -75,18 +85,20 @@ public class DownloadController {
         //去掉下载路径，只保留前端所看到的样子
         String filePathName = s.replace(this.downloadPath + "\\", "");
 
-        if (!file.isDirectory()) {
-            //文件
-            zipOutputStream.putNextEntry(new ZipEntry(filePathName));
-            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(s));
-            IOUtils.copy(inputStream,zipOutputStream);
-            inputStream.close();
-        } else {
-            //目录
-            if (file.list().length == 0) {
-                zipOutputStream.putNextEntry(new ZipEntry(filePathName + "\\"));
-            } else {
-                zipDownload(zipOutputStream, s);
+        zipOutputStream.putNextEntry(new ZipEntry(filePathName));
+        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(s));
+        IOUtils.copy(inputStream,zipOutputStream);
+        inputStream.close();
+    }
+
+    private void getFileDirectory(String fileName,List<String> files){
+        File file = new File(fileName);
+        if(!file.isDirectory()){
+            files.add(fileName);
+        }else{
+            List<String> list = Arrays.asList(file.list());
+            for (String s : list) {
+                getFileDirectory(file.getAbsolutePath() + "\\" + s,files);
             }
         }
     }
