@@ -25,10 +25,18 @@ public class UploadController {
 
     @PostMapping
     public void upload(MultipartFile file, HttpServletRequest request) throws IOException {
-        log.info("{} 上传文件 {} 大小 {} 到目录 {} ", Utils.getIp(request), file.getOriginalFilename(), Utils.byteConversion(file.getSize()), this.path);
         String originalFilename = file.getOriginalFilename();
-        String fileName = Utils.getIp(request) + "-" +originalFilename;
-        file.transferTo(new File(this.path + "/" + fileName));
+        if(originalFilename == null) return;
+        log.info("{} 上传文件 {} 大小 {} 到目录 {} ", Utils.getIp(request), file.getOriginalFilename(), Utils.byteConversion(file.getSize()), this.path);
+
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        originalFilename = originalFilename.substring(0,originalFilename.lastIndexOf("."));
+        int size = 0;
+        File file1 = new File(this.path + "/" + originalFilename);
+        while (file1.exists()) {
+            file1 = new File(this.path + "/" + originalFilename + " " + "(" + ++size + ")" + suffix);
+        }
+        file.transferTo(new File(this.path + "/" + file1.getName()));
     }
 
 }
