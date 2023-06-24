@@ -1,7 +1,6 @@
 package com.example.controller;
 
-import com.example.util.Utils;
-import jakarta.servlet.ServletOutputStream;
+import com.example.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +12,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 /**

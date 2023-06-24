@@ -1,6 +1,6 @@
 package com.example.interceptor;
 
-import com.example.util.Utils;
+import com.example.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

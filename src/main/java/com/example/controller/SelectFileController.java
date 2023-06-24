@@ -3,7 +3,7 @@ package com.example.controller;
 import com.example.common.R;
 import com.example.domain.FileEntity;
 import com.example.domain.dto.FileEntityDto;
-import com.example.util.Utils;
+import com.example.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

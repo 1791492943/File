@@ -1,6 +1,6 @@
 package com.example.domain;
 
-import com.example.util.Utils;
+import com.example.utils.Utils;
 import lombok.Getter;
 import lombok.ToString;
 

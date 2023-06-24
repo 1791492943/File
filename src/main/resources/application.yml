@@ -11,6 +11,8 @@ project-file-path:
   upload: D:\network-disk
   # 文件下载的目录
   download: D:\network-disk
+  # 文件图标的目录
+  images: D:\network-disk-img
 
 logging:
   file:
