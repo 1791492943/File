@@ -73,7 +73,7 @@
                     label="文件名"
                     fit="true">
                 <template slot-scope="scope">
-                    <img style="width: 16px;height: 16px" :src="getImage(scope.row.directoryName)">
+                    <img :src="getImage(scope.row.directoryName)">
                     <span> {{scope.row.name}}</span>
                 </template>
             </el-table-column>
