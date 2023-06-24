@@ -15,11 +15,12 @@ import java.io.IOException;
 @RequestMapping("/image")
 public class ImageController {
 
-    @GetMapping("/{absolutePath}")
-    public R getImage(@PathVariable String absolutePath, HttpServletResponse response) throws IOException {
+    @GetMapping
+    public void getImage(String absolutePath, HttpServletResponse response) throws IOException {
+        response.reset();
+        response.setContentType("image/png");
         ServletOutputStream outputStream = response.getOutputStream();
         ImageUtil.getImage(absolutePath,outputStream);
-        return R.success("图片下载成功");
     }
 
 }
