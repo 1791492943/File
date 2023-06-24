@@ -16,6 +16,8 @@ public class AfterRunner implements ApplicationRunner {
     private String download;
     @Value("${project-file-path.upload}")
     private String upload;
+    @Value("${project-file-path.images}")
+    private String images;
 
 
     @Override
@@ -32,6 +34,12 @@ public class AfterRunner implements ApplicationRunner {
             log.info("上传目录 {} 不存在,正在自动创建",this.upload);
             boolean mkdirs = file.mkdirs();
             log.info(mkdirs ? "上传目录 {} 创建成功" : "上传目录 {} 创建失败",this.upload);
+        }
+        file = new File(this.images);
+        if(!file.exists()){
+            log.info("图片仓库目录 {} 不存在,正在自动创建",this.images);
+            boolean mkdirs = file.mkdirs();
+            log.info(mkdirs ? "图片仓库目录 {} 创建成功" : "图片仓库目录 {} 创建失败",this.images);
         }
 
     }
