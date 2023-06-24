@@ -110,6 +110,13 @@
         </el-upload>
     </el-dialog>
 
+    <!--预览文本弹窗-->
+    <el-dialog
+            :visible.sync="textDialogVisible"
+            width="80%"
+            title="文件预览（测试版）">
+        <div style="white-space:pre"><span>{{text}}</span></div>
+    </el-dialog>
 </div>
 
 
@@ -197,6 +204,16 @@
                     this.directoryName = row.directoryName
                     this.num++
                 }
+                if(row.name.endsWith(".xml") || row.name.endsWith(".txt") || row.name.endsWith(".log")){
+                    axios({
+                        method: "get",
+                        url: "/onlinePreview/text?absolutePath=" + row.directoryName,
+                    }).then(resp => {
+                        this.textName = row.name
+                        this.text = resp.data.data;
+                        this.textDialogVisible = true
+                    })
+                }
             },
             /*查询根目录*/
             selectRoot() {
@@ -223,6 +240,8 @@
         },
         data() {
             return {
+                text:"",
+                textDialogVisible: false,
                 downloadList:[],
                 //上传弹窗是否显示
                 dialogVisible: false,
