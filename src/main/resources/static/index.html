@@ -53,9 +53,7 @@
             <el-button @click="back" size="mini" round>返回上一级</el-button>
         </el-row>
     </div>
-
     <br>
-
 
     <!--下载表格-->
     <template>
@@ -116,6 +114,12 @@
             width="80%"
             title="文件预览（测试版）">
         <div style="white-space:pre"><span>{{text}}</span></div>
+    </el-dialog>
+    <!--预览图片弹窗-->
+    <el-dialog
+            :visible.sync="imageDialogVisible"
+            title="图片预览（测试版）">
+            <el-image :src="imgUrl"></el-image>
     </el-dialog>
 </div>
 
@@ -193,6 +197,7 @@
             },
             //点击表格
             clickData(row, event, column) {
+                // 进入文件夹
                 if (row.directoryYN == true) {
                     axios({
                         method: "post",
@@ -204,14 +209,26 @@
                     this.directoryName = row.directoryName
                     this.num++
                 }
-                if(row.name.endsWith(".xml") || row.name.endsWith(".txt") || row.name.endsWith(".log")){
+                // 预览文本文件
+                if(row.name.toLowerCase().endsWith(".xml") || row.name.toLowerCase().endsWith(".txt") || row.name.toLowerCase().endsWith(".log")){
                     axios({
                         method: "get",
                         url: "/onlinePreview/text?absolutePath=" + row.directoryName,
                     }).then(resp => {
-                        this.textName = row.name
                         this.text = resp.data.data;
                         this.textDialogVisible = true
+                    })
+                }
+                // 预览图片
+                if(row.name.toLowerCase().endsWith(".jpg") || row.name.toLowerCase().endsWith(".jpeg") || row.name.toLowerCase().endsWith(".png") || row.name.toLowerCase().endsWith(".gif")){
+                    axios({
+                        method: "get",
+                        url: "/onlinePreview/image?absolutePath=" + row.directoryName,
+                        responseType: "blob"
+                    }).then(resp => {
+                        this.imgUrl = URL.createObjectURL(resp.data);
+                        this.imageDialogVisible = true
+                        console.log(resp)
                     })
                 }
             },
@@ -233,13 +250,12 @@
                                     "/download?filePath=" + row,"_self"
                                 )*/
                 return "/download?filePath=" + row;
-            },
-            downloadZip(){
-
             }
         },
         data() {
             return {
+                imgUrl:"",
+                imageDialogVisible:false,
                 text:"",
                 textDialogVisible: false,
                 downloadList:[],
