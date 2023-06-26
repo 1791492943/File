@@ -73,9 +73,10 @@ public class SelectFileController {
         List<FileEntity> fileEntities = new ArrayList<>();
         Utils.findFileList(new File(this.downloadPath), fileEntities);
         fileEntities = fileEntities.stream()
-                .map(o -> {
+                //高亮显示 有问题 暂时不用了
+                /*.map(o -> {
                     o.setName(o.getName().replace(fuzzyQuery,"<em>" + fuzzyQuery + "</em>"));
-                    return o;})
+                    return o;})*/
                 .filter(item -> {
                     String itemToLow = item.getName().toLowerCase();
                     String fuzzyQueryToLow = fuzzyQuery.toLowerCase();
