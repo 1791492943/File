@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @RestController
@@ -22,11 +23,16 @@ public class OnlinePreviewController {
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String s;
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sb1 = new StringBuilder();
             while ((s = br.readLine()) != null) {
                 sb.append(s).append("\n");
+                sb1.append(s);
             }
-            return R.success(sb);
+            ArrayList<String> list = new ArrayList<>();
+            list.add(sb.toString());
+            list.add(sb1.toString());
+            return R.success(list);
         }
     }
 
