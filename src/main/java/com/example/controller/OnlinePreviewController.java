@@ -29,7 +29,6 @@ public class OnlinePreviewController {
             while ((s = br.readLine()) != null) {
                 sb.append(s).append("\n");
             }
-            ArrayList<String> list = new ArrayList<>();
             return R.success(sb);
         }
     }
