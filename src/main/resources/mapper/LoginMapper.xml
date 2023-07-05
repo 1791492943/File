@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.LoginMapper">
+
+    <select id="getPermissions" resultType="java.lang.String">
+        select m.menu_key
+        from user as u
+                 left join user_role as ur on u.id = ur.role_id
+                 left join role as r on ur.role_id = r.id
+                 left join role_menu as rm on r.id = rm.role_id
+                 left join menu as m on rm.menu_id = m.id
+        where u.account = #{userId};
+    </select>
+</mapper>

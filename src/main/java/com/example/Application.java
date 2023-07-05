@@ -1,5 +1,7 @@
 package com.example;
 
+import cn.dev33.satoken.secure.BCrypt;
+import cn.dev33.satoken.secure.SaBase64Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

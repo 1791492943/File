@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.common.R;
-import com.example.domain.FileEntity;
+import com.example.domain.entity.FileEntity;
 import com.example.domain.dto.FileEntityDto;
 import com.example.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;

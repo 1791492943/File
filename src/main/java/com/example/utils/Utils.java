@@ -1,6 +1,6 @@
 package com.example.utils;
 
-import com.example.domain.FileEntity;
+import com.example.domain.entity.FileEntity;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;

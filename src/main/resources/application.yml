@@ -5,6 +5,11 @@ spring:
       max-request-size: 200GB
       #单次上传 单文件大小
       max-file-size: 100GB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/network_disk
+    username: root
+    password: 1234
 
 project-file-path:
   # 文件上传到哪里
@@ -13,6 +18,7 @@ project-file-path:
   download: D:\network-disk
   # 文件图标的目录
   images: D:\network-disk-img
+
 
 logging:
   file:
