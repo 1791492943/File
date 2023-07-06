@@ -124,10 +124,10 @@ public class Utils {
         ServletOutputStream outputStream = response.getOutputStream();
 
         response.reset();
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename="+ "download" + filePath.substring(filePath.lastIndexOf(".")));
         response.setContentType("application/octet-stream");
         response.addHeader("Content-Length", "" + new File(filePath).length());
-
-
         byte[] bytes = new byte[8192];
         int len;
         while ((len = inputStream.read(bytes)) != -1) {
@@ -135,9 +135,7 @@ public class Utils {
             outputStream.flush();
         }
 
-        outputStream.close();
         inputStream.close();
-
     }
 
 

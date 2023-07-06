@@ -1,5 +1,6 @@
 package com.example.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.domain.entity.User;
 import com.example.domain.vo.LoginVo;
 import org.apache.ibatis.annotations.Mapper;
