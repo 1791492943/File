@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.common.R;
 import com.example.service.DownloadService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,5 +39,4 @@ public class DownloadController {
     public void downloadZip(String path, HttpServletResponse response, HttpServletRequest request) {
         downloadService.downloadZip(path, response, request);
     }
-
 }

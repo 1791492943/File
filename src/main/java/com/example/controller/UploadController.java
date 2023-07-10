@@ -26,9 +26,6 @@ import java.io.IOException;
 @Slf4j
 public class UploadController {
 
-    @Value("${project-file-path.upload}")
-    private String path;
-
     @Resource
     private UploadService uploadService;
 
