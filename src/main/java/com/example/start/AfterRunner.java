@@ -18,6 +18,8 @@ public class AfterRunner implements ApplicationRunner {
     private String upload;
     @Value("${project-file-path.images}")
     private String images;
+    @Value("${project-file-path.delete}")
+    private String delete;
 
 
     @Override
@@ -40,6 +42,12 @@ public class AfterRunner implements ApplicationRunner {
             log.info("图片仓库目录 {} 不存在,正在自动创建",this.images);
             boolean mkdirs = file.mkdirs();
             log.info(mkdirs ? "图片仓库目录 {} 创建成功" : "图片仓库目录 {} 创建失败",this.images);
+        }
+        file = new File(this.delete);
+        if(!file.exists()){
+            log.info("回收站目录 {} 不存在,正在自动创建",this.delete);
+            boolean mkdirs = file.mkdirs();
+            log.info(mkdirs ? "回收站目录 {} 创建成功" : "回收站库目录 {} 创建失败",this.delete);
         }
 
     }

@@ -13,4 +13,10 @@ public class GlobalException {
         return R.error(e.getMessage());
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public R exception(RuntimeException e){
+        e.printStackTrace();
+        return R.error(e.getMessage());
+    }
+
 }

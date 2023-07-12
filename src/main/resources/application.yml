@@ -18,6 +18,8 @@ project-file-path:
   download: D:\network-disk
   # 文件图标的目录
   images: D:\network-disk-img
+  # 被删除文件的目录
+  delete: D:\network-disk-delete
 
 
 logging:
