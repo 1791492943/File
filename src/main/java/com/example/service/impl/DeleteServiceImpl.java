@@ -87,9 +87,31 @@ public class DeleteServiceImpl implements FileService {
         }
     }
 
+    @Override
+    public boolean rename(String oldName, String newName) {
+        File file = new File(oldName);
+        boolean b = file.renameTo(new File(newName));
+        return b;
+    }
+
     private void deleteFile(String absolutePath) {
         File file = new File(absolutePath);
         if (!file.exists()) return;
+        Integer loginIdAsInt = StpUtil.getLoginIdAsInt();
+
+        if (file.isFile()) {
+            String uuid = UUID.randomUUID().toString();
+            String suffix = file.getName().substring(file.getName().lastIndexOf("."));
+            file.renameTo(new File(delete + "\\" + uuid + suffix));
+            Operate operate = Operate.builder()
+                    .userId(loginIdAsInt)
+                    .createDate(new Timestamp(System.currentTimeMillis()))
+                    .behavior(1)
+                    .file(file.getAbsolutePath())
+                    .event(uuid + suffix)
+                    .build();
+            operateService.save(operate);
+        }
 
         if (file.isDirectory()) {
             String[] list = file.list();
@@ -98,20 +120,6 @@ public class DeleteServiceImpl implements FileService {
                 deleteFile(absolutePath + "\\" + s);
             }
             file.delete();
-        }
-
-        if (file.isFile()) {
-            String uuid = UUID.randomUUID().toString();
-            String suffix = file.getName().substring(file.getName().lastIndexOf("."));
-            file.renameTo(new File(delete + "\\" + uuid + suffix));
-            Operate operate = Operate.builder()
-                    .userId(StpUtil.getLoginIdAsInt())
-                    .createDate(new Timestamp(System.currentTimeMillis()))
-                    .behavior(1)
-                    .file(file.getAbsolutePath())
-                    .event(uuid + suffix)
-                    .build();
-            operateService.save(operate);
         }
     }
 }

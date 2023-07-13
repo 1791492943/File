@@ -2,6 +2,7 @@ package com.example.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.example.common.R;
+import com.example.globalException.exception.ServiceException;
 import com.example.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +35,13 @@ public class FileController {
     public R newDirectory(String directory){
         String s = fileService.newDirectory(directory);
         return R.success(s);
+    }
+
+    @SaCheckPermission("admin:deleteFile")
+    @PutMapping("/rename")
+    public R rename(String oldName, String newName){
+        boolean rename = fileService.rename(oldName, newName);
+        if(!rename) throw new ServiceException("重命名失败,可能是文件包含以下字符 \\ / : * ? \" < > |");
+        return R.success("重命名成功");
     }
 }

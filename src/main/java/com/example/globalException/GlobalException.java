@@ -13,8 +13,8 @@ public class GlobalException {
         return R.error(e.getMessage());
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public R exception(RuntimeException e){
+    @ExceptionHandler(Exception.class)
+    public R exception(Exception e){
         e.printStackTrace();
         return R.error(e.getMessage());
     }

@@ -6,4 +6,6 @@ public interface FileService {
     void move(String file, String directory);
 
     String newDirectory(String directory);
+
+    boolean rename(String oldName, String newName);
 }
