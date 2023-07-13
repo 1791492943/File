@@ -11,5 +11,6 @@ public class FileEntityDto {
 
     private String announcement;
     private List list;
+    private String rootPath;
 
 }

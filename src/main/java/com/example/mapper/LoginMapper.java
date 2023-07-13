@@ -14,6 +14,7 @@ public interface LoginMapper {
     @Select("select * from user where account = #{account} and password = #{password}")
     User login(LoginVo loginVo);
 
-
     List<String> getPermissions(String userId);
+
+    String getRole(String userId);
 }

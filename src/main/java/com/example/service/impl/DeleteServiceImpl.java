@@ -3,6 +3,7 @@ package com.example.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.domain.entity.FileEntity;
 import com.example.domain.entity.Operate;
+import com.example.globalException.exception.ServiceException;
 import com.example.mapper.OperateMapper;
 import com.example.service.FileService;
 import com.example.service.OperateService;
@@ -48,7 +49,8 @@ public class DeleteServiceImpl implements FileService {
         fileEntity.setDirectoryName(file);
 
         File file1 = new File(file);
-        boolean b = file1.renameTo(new File(directory + "\\" + fileEntity.getName()));
+        File file2 = new File(directory + "\\" + fileEntity.getName());
+        boolean b = file1.renameTo(file2);
         Operate operate = Operate.builder()
                 .createDate(new Timestamp(System.currentTimeMillis()))
                 .userId(StpUtil.getLoginIdAsInt())
@@ -90,7 +92,9 @@ public class DeleteServiceImpl implements FileService {
     @Override
     public boolean rename(String oldName, String newName) {
         File file = new File(oldName);
-        boolean b = file.renameTo(new File(newName));
+        File file1 = new File(newName);
+        if(file1.exists()) throw new ServiceException("文件夹已存在");
+        boolean b = file.renameTo(file1);
         return b;
     }
 

@@ -37,7 +37,7 @@ public class FileController {
         return R.success(s);
     }
 
-    @SaCheckPermission("admin:deleteFile")
+    @SaCheckPermission("admin:moveFile")
     @PutMapping("/rename")
     public R rename(String oldName, String newName){
         boolean rename = fileService.rename(oldName, newName);

@@ -26,4 +26,9 @@ public class LoginServiceImpl implements LoginService {
 
         return user;
     }
+
+    @Override
+    public String getRole(String userId) {
+        return loginMapper.getRole(userId);
+    }
 }

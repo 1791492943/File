@@ -15,7 +15,8 @@ public class StpInterfaceImpl implements StpInterface {
 
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        List<String> permissions = loginMapper.getPermissions(loginId.toString());
+        String string = loginId.toString();
+        List<String> permissions = loginMapper.getPermissions(string);
         return permissions;
     }
 

@@ -40,6 +40,7 @@ public class SelectFileController {
         FileEntityDto fileEntityDto = new FileEntityDto();
         fileEntityDto.setList(directoryFile);
         fileEntityDto.setAnnouncement(this.announcement);
+        fileEntityDto.setRootPath(downloadPath);
         return R.success(fileEntityDto);
     }
 

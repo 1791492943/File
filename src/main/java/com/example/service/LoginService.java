@@ -7,4 +7,6 @@ public interface LoginService {
 
     User login(LoginVo loginVo);
 
+    String getRole(String userId);
+
 }

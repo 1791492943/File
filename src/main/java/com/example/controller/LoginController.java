@@ -19,8 +19,8 @@ public class LoginController {
     public R login(LoginVo loginVo) {
         User user = loginService.login(loginVo);
         StpUtil.login(user.getAccount());
-
-        return R.success("登陆成功");
+        String role = loginService.getRole(user.getAccount());
+        return R.success(role);
     }
 
     @GetMapping("/isLogin")
