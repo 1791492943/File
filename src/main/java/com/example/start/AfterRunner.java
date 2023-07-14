@@ -1,6 +1,8 @@
 package com.example.start;
 
+import com.example.config.ConfigProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -12,42 +14,35 @@ import java.io.File;
 @Slf4j
 public class AfterRunner implements ApplicationRunner {
 
-    @Value("${project-file-path.download}")
-    private String download;
-    @Value("${project-file-path.upload}")
-    private String upload;
-    @Value("${project-file-path.images}")
-    private String images;
-    @Value("${project-file-path.delete}")
-    private String delete;
-
+    @Autowired
+    private ConfigProperties configProperties;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //判断目录是否存在,不存在则创建
-        File file = new File(this.download);
+        File file = new File(configProperties.getDownloadPath());
         if(!file.exists()){
-            log.info("下载目录 {} 不存在,正在自动创建",this.download);
+            log.warn("下载目录 {} 不存在,正在自动创建",configProperties.getDownloadPath());
             boolean mkdirs = file.mkdirs();
-            log.info(mkdirs ? "下载目录 {} 创建成功" : "下载目录 {} 创建失败",this.download);
+            log.info(mkdirs ? "下载目录 {} 创建成功" : "下载目录 {} 创建失败",configProperties.getDownloadPath());
         }
-        file = new File(this.upload);
+        file = new File(configProperties.getUploadPath());
         if(!file.exists()){
-            log.info("上传目录 {} 不存在,正在自动创建",this.upload);
+            log.warn("上传目录 {} 不存在,正在自动创建",configProperties.getUploadPath());
             boolean mkdirs = file.mkdirs();
-            log.info(mkdirs ? "上传目录 {} 创建成功" : "上传目录 {} 创建失败",this.upload);
+            log.info(mkdirs ? "上传目录 {} 创建成功" : "上传目录 {} 创建失败",configProperties.getUploadPath());
         }
-        file = new File(this.images);
+        file = new File(configProperties.getImagesPath());
         if(!file.exists()){
-            log.info("图片仓库目录 {} 不存在,正在自动创建",this.images);
+            log.warn("图片仓库目录 {} 不存在,正在自动创建",configProperties.getImagesPath());
             boolean mkdirs = file.mkdirs();
-            log.info(mkdirs ? "图片仓库目录 {} 创建成功" : "图片仓库目录 {} 创建失败",this.images);
+            log.info(mkdirs ? "图片仓库目录 {} 创建成功" : "图片仓库目录 {} 创建失败",configProperties.getImagesPath());
         }
-        file = new File(this.delete);
+        file = new File(configProperties.getDeletePath());
         if(!file.exists()){
-            log.info("回收站目录 {} 不存在,正在自动创建",this.delete);
+            log.warn("回收站目录 {} 不存在,正在自动创建",configProperties.getDeletePath());
             boolean mkdirs = file.mkdirs();
-            log.info(mkdirs ? "回收站目录 {} 创建成功" : "回收站库目录 {} 创建失败",this.delete);
+            log.info(mkdirs ? "回收站目录 {} 创建成功" : "回收站库目录 {} 创建失败",configProperties.getDeletePath());
         }
 
     }

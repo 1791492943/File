@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.aop.annotation.Download;
+import com.example.aop.annotation.PathCheck;
 import com.example.service.DownloadService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +28,8 @@ public class DownloadController {
      * @param filePath 需要下载的文件路径
      */
     @GetMapping
+    @Download
+    @PathCheck
     public void downloadFile(String filePath, HttpServletRequest request, HttpServletResponse response) throws IOException {
         downloadService.downloadFile(filePath, request, response);
     }
@@ -36,6 +40,8 @@ public class DownloadController {
      * @return 提示信息
      */
     @GetMapping("/zip")
+    @Download
+    @PathCheck
     public void downloadZip(String path, HttpServletResponse response, HttpServletRequest request) {
         downloadService.downloadZip(path, response, request);
     }

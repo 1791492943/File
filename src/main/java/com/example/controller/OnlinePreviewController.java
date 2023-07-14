@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.aop.annotation.PathCheck;
 import com.example.common.R;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 @RestController
@@ -19,6 +18,7 @@ import java.util.Objects;
 public class OnlinePreviewController {
 
     @GetMapping("/text")
+    @PathCheck
     public R previewText(String absolutePath) throws IOException {
         File file = new File(absolutePath);
         if (!file.exists()) return R.error("预览文件不存在");
@@ -34,6 +34,7 @@ public class OnlinePreviewController {
     }
 
     @GetMapping("/image")
+    @PathCheck
     public void previewImage(String absolutePath, HttpServletResponse response) throws IOException {
         File file = new File(absolutePath);
         if (!file.exists()) return;
@@ -49,6 +50,7 @@ public class OnlinePreviewController {
     }
 
     @GetMapping("/video")
+    @PathCheck
     public void previewVideo(String absolutePath, HttpServletRequest request, HttpServletResponse response) throws IOException{
         response.reset();
         File file = new File(absolutePath);

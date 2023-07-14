@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.example.config.ConfigProperties;
 import com.example.domain.entity.FileInfo;
 import com.example.globalException.exception.UploadException;
 import com.example.mapper.UploadMapper;
@@ -9,6 +10,7 @@ import com.example.utils.Utils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +26,8 @@ public class UploadServiceImpl implements UploadService {
     @Resource
     private UploadMapper uploadMapper;
 
-    @Value("${project-file-path.upload}")
-    private String path;
+    @Autowired
+    private ConfigProperties configProperties;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -36,15 +38,15 @@ public class UploadServiceImpl implements UploadService {
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         originalFilename = originalFilename.substring(0, originalFilename.lastIndexOf("."));
         int size = 0;
-        File file1 = new File(this.path + "/" + originalFilename + suffix);
+        File file1 = new File(configProperties.getUploadPath() + "/" + originalFilename + suffix);
         while (file1.exists()) {
-            file1 = new File(this.path + "/" + originalFilename + " " + "(" + ++size + ")" + suffix);
+            file1 = new File(configProperties.getUploadPath() + "/" + originalFilename + " " + "(" + ++size + ")" + suffix);
         }
 
         FileInfo fileInfo = FileInfo.builder()
                 .originalName(file.getOriginalFilename())
                 .finalName(file1.getName())
-                .filePath(path).filePathName(path + "\\" + file1.getName())
+                .filePath(configProperties.getUploadPath()).filePathName(configProperties.getUploadPath() + "\\" + file1.getName())
                 .size(file.getSize())
                 .suffix(suffix)
                 .uploadUser(Integer.parseInt(StpUtil.getLoginIdAsString()) - 10000)
@@ -54,7 +56,7 @@ public class UploadServiceImpl implements UploadService {
         if(save == 0){
             throw new UploadException("文件保存失败");
         }
-        file.transferTo(new File(this.path + "/" + file1.getName()));
+        file.transferTo(new File(configProperties.getUploadPath() + "/" + file1.getName()));
         log.info("文件保存成功");
         return save > 0;
     }

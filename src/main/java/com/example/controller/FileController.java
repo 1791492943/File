@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.example.aop.annotation.PathCheck;
 import com.example.common.R;
 import com.example.globalException.exception.ServiceException;
 import com.example.service.FileService;
@@ -18,6 +19,7 @@ public class FileController {
 
     @SaCheckPermission("admin:deleteFile")
     @DeleteMapping("/delete")
+    @PathCheck
     public R delete(String absolutePath){
         fileService.delete(absolutePath);
         return R.success("删除成功");
@@ -25,6 +27,7 @@ public class FileController {
 
     @SaCheckPermission("admin:moveFile")
     @PutMapping("/move")
+    @PathCheck
     public R move(String file,String directory){
         fileService.move(file,directory);
         return R.success("移动成功");
@@ -32,6 +35,7 @@ public class FileController {
 
     @SaCheckPermission("admin:newDirectory")
     @PostMapping("/newDirectory")
+    @PathCheck
     public R newDirectory(String directory){
         String s = fileService.newDirectory(directory);
         return R.success(s);
@@ -39,6 +43,7 @@ public class FileController {
 
     @SaCheckPermission("admin:moveFile")
     @PutMapping("/rename")
+    @PathCheck
     public R rename(String oldName, String newName){
         boolean rename = fileService.rename(oldName, newName);
         if(!rename) throw new ServiceException("重命名失败,可能是文件包含以下字符 \\ / : * ? \" < > |");

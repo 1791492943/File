@@ -1,13 +1,13 @@
 package com.example.service.impl;
 
-import com.example.globalException.exception.DownloadException;
+import com.example.config.ConfigProperties;
 import com.example.service.DownloadService;
 import com.example.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -20,15 +20,12 @@ import java.util.zip.ZipOutputStream;
 @Service
 @Slf4j
 public class DownloadServiceImpl implements DownloadService {
-    @Value("${project-file-path.download}")
-    private String downloadPath;
+
+    @Autowired
+    private ConfigProperties configProperties;
+
     @Override
     public void downloadFile(String filePath, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String path = this.downloadPath.replace("\\", "/");
-        if (!filePath.startsWith(path)) {
-            log.warn("{} 通过特殊手段下载文件 {} 大小 {} 已拒绝", Utils.getIp(request), filePath, Utils.byteConversion(new File(filePath).length()));
-            throw new DownloadException("非法路径");
-        }
         log.info("{} 请求下载文件 {} 大小 {}", Utils.getIp(request), filePath, Utils.byteConversion(new File(filePath).length()));
         Utils.fileDownload(filePath, response);
     }
@@ -66,7 +63,7 @@ public class DownloadServiceImpl implements DownloadService {
         if (!file.exists()) return;
 
         //去掉下载路径，只保留前端所看到的样子
-        String filePathName = s.replace(this.downloadPath + "\\", "");
+        String filePathName = s.replace(configProperties.getPath() + "\\" + configProperties.getDownloadPath() + "\\", "");
 
         zipOutputStream.putNextEntry(new ZipEntry(filePathName));
         BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(s));

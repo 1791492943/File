@@ -2,6 +2,7 @@ package com.example.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
+import com.example.aop.annotation.Upload;
 import com.example.domain.entity.FileEntity;
 import com.example.domain.entity.FileInfo;
 import com.example.mapper.UploadMapper;
@@ -32,6 +33,7 @@ public class UploadController {
 
     @SaCheckPermission("user:upload")
     @PostMapping
+    @Upload
     public void upload(MultipartFile file) throws IOException {
         uploadService.save(file);
         log.info("文件保存成功");

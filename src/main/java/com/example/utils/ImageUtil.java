@@ -1,6 +1,9 @@
 package com.example.utils;
 
+import com.example.config.ConfigProperties;
+import lombok.Data;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,14 +19,18 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Component
+@Data
 public class ImageUtil {
 
-    private static String imagesPath;
+    private static ConfigProperties configProperties;
 
-    @Value("${project-file-path.images}")
-    public void setImagesPath(String imagesPath) {
-        ImageUtil.imagesPath = imagesPath;
+    @Autowired
+    public void setConfigProperties(ConfigProperties configProperties) {
+        ImageUtil.configProperties = configProperties;
     }
+
+    @Autowired
+
 
     /**
      * 根据路径获取文件图片，并通过 outputStream 输出
@@ -61,7 +68,7 @@ public class ImageUtil {
         Graphics g = image.createGraphics(); // 获取Graphics对象
         icon.paintIcon(null, g, 0, 0); // 将图标绘制到BufferedImage对象上
         g.dispose(); // 释放资源
-        FileOutputStream fos = new FileOutputStream(imagesPath + "\\" + absolutePath.substring(absolutePath.lastIndexOf(".") + 1) + ".png"); // 创建一个FileOutputStream对象，指定输出文件名
+        FileOutputStream fos = new FileOutputStream(configProperties.getImagesPath() + "\\" + absolutePath.substring(absolutePath.lastIndexOf(".") + 1) + ".png"); // 创建一个FileOutputStream对象，指定输出文件名
         ImageIO.write(image, "png", fos); // 将BufferedImage对象写入到输出流中，指定输出格式为png
         fos.close(); // 关闭输出流
     }
@@ -74,13 +81,13 @@ public class ImageUtil {
      */
     private static File imageExists(String absolutePath) {
         // 判断图片是否存在
-        File images = new File(imagesPath);
+        File images = new File(configProperties.getImagesPath());
         // 获取文件后缀名 不带.
         String suffix = absolutePath.substring(absolutePath.lastIndexOf(".") + 1);
         for (String image : Objects.requireNonNull(images.list())) {
             // 图片结尾必须时png，所以开头就为，原始的后缀名
             if (image.startsWith(suffix)) {
-                return new File(imagesPath + "\\" + image);
+                return new File(configProperties.getImagesPath() + "\\" + image);
             }
         }
 

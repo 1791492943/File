@@ -23,9 +23,4 @@ public class LoginController {
         return R.success(role);
     }
 
-    @GetMapping("/isLogin")
-    public String isLogin() {
-        return "当前会话是否登录：" + StpUtil.isLogin();
-    }
-
 }

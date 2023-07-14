@@ -1,14 +1,13 @@
 package com.example.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.example.config.ConfigProperties;
 import com.example.domain.entity.FileEntity;
 import com.example.domain.entity.Operate;
 import com.example.globalException.exception.ServiceException;
-import com.example.mapper.OperateMapper;
 import com.example.service.FileService;
 import com.example.service.OperateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,32 +18,18 @@ import java.util.UUID;
 public class DeleteServiceImpl implements FileService {
 
     @Autowired
-    private OperateMapper operateMapper;
-
-    @Autowired
     private OperateService operateService;
 
-    @Value("${project-file-path.delete}")
-    private String delete;
-
-    @Value("${project-file-path.download}")
-    private String download;
+    @Autowired
+    private ConfigProperties configProperties;
 
     @Override
     public void delete(String absolutePath) {
-        absolutePath = absolutePath.replace("/", "\\");
-        if (!absolutePath.startsWith(download)) throw new RuntimeException("路径非法");
-
         deleteFile(absolutePath);
     }
 
     @Override
     public void move(String file, String directory) {
-        file = file.replace("/", "\\");
-        directory = directory.replace("/", "\\");
-        if (!file.startsWith(download)) throw new RuntimeException("路径非法");
-        if (!directory.startsWith(download)) throw new RuntimeException("路径非法");
-
         FileEntity fileEntity = new FileEntity();
         fileEntity.setDirectoryName(file);
 
@@ -64,9 +49,6 @@ public class DeleteServiceImpl implements FileService {
 
     @Override
     public String newDirectory(String directory) {
-        directory = directory.replace("/", "\\");
-        if (!directory.startsWith(download)) throw new RuntimeException("路径非法");
-
         String fileName = "新建文件夹";
         String num = "(0)";
         while (true) {
@@ -106,7 +88,7 @@ public class DeleteServiceImpl implements FileService {
         if (file.isFile()) {
             String uuid = UUID.randomUUID().toString();
             String suffix = file.getName().substring(file.getName().lastIndexOf("."));
-            file.renameTo(new File(delete + "\\" + uuid + suffix));
+            file.renameTo(new File(configProperties.getDownloadPath() + "\\" + uuid + suffix));
             Operate operate = Operate.builder()
                     .userId(loginIdAsInt)
                     .createDate(new Timestamp(System.currentTimeMillis()))

@@ -1,26 +1,40 @@
+server:
+  # 端口号
+  port: 80
+
 spring:
   servlet:
     multipart:
-      # 单次上传 总文件大小
-      max-request-size: 200GB
       #单次上传 单文件大小
       max-file-size: 100GB
+      #单次请求大小
+      max-request-size: 100GB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库ip和数据库名称
     url: jdbc:mysql://127.0.0.1:3306/network_disk
+    # 数据库账号
     username: root
+    # 数据库密码
     password: 1234
 
-project-file-path:
-  # 文件上传到哪里
-  upload: D:\network-disk
+project:
+  # 文件储存地址
+  path: D:\network-disk
+  # 文件上传目录
+  uploadPath: upload
   # 文件下载的目录
-  download: D:\network-disk
+  downloadPath: download
   # 文件图标的目录
-  images: D:\network-disk-img
+  imagesPath: images
   # 被删除文件的目录
-  delete: D:\network-disk-delete
-
+  deletePath: delete
+  # 上传服务开关
+  uploadService: true
+  # 下载服务开关
+  downloadService: true
+  # 公告内容
+  announcement: 公告内容
 
 logging:
   file:
@@ -35,15 +49,6 @@ logging:
   level:
     # 输出级别
     root: info
+#  config: classpath:/config/logback-spring.xml
 
-server:
-  # 端口号
-  port: 80
 
-fileServer:
-  # 是否开启上传
-  upload: true
-  # 是否开启下载
-  download: true
-
-setAnnouncement: 公告内容
