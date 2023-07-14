@@ -88,7 +88,7 @@ public class DeleteServiceImpl implements FileService {
         if (file.isFile()) {
             String uuid = UUID.randomUUID().toString();
             String suffix = file.getName().substring(file.getName().lastIndexOf("."));
-            file.renameTo(new File(configProperties.getDownloadPath() + "\\" + uuid + suffix));
+            file.renameTo(new File(configProperties.getDeletePath() + "\\" + uuid + suffix));
             Operate operate = Operate.builder()
                     .userId(loginIdAsInt)
                     .createDate(new Timestamp(System.currentTimeMillis()))
