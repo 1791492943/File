@@ -71,6 +71,7 @@ public class ImageUtil {
         FileOutputStream fos = new FileOutputStream(configProperties.getImagesPath() + "\\" + absolutePath.substring(absolutePath.lastIndexOf(".") + 1) + ".png"); // 创建一个FileOutputStream对象，指定输出文件名
         ImageIO.write(image, "png", fos); // 将BufferedImage对象写入到输出流中，指定输出格式为png
         fos.close(); // 关闭输出流
+        ImageUtil.getImage(absolutePath, outputStream);
     }
 
     /**

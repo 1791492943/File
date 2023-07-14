@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.example.aop.annotation.PathCheck;
 import com.example.common.R;
 import com.example.config.ConfigProperties;
@@ -79,5 +80,12 @@ public class SelectFileController {
                     return itemToLow.contains(fuzzyQueryToLow);})
                 .collect(Collectors.toList());
         return R.success(fileEntities);
+    }
+
+    @SaCheckPermission("admin:moveFile")
+    @GetMapping("/upload")
+    public R selectUpload(){
+        List<FileEntity> directoryFile = Utils.getDirectoryFile(configProperties.getUploadPath());
+        return R.success(directoryFile);
     }
 }
