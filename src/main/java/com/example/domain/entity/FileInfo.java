@@ -11,10 +11,10 @@ public class FileInfo {
     private String originalName;
     private String finalName;
     private String filePath;
-    private String filePathName;
     private Long size;
     private String suffix;
     private String uploadDate;
     private Integer uploadUser;
+    private String hashValue;
 
 }

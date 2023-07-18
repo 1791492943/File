@@ -3,6 +3,7 @@ package com.example.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.aop.annotation.Upload;
+import com.example.common.R;
 import com.example.domain.entity.FileEntity;
 import com.example.domain.entity.FileInfo;
 import com.example.mapper.UploadMapper;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 上传文件
@@ -34,9 +36,9 @@ public class UploadController {
     @SaCheckPermission("user:upload")
     @PostMapping
     @Upload
-    public void upload(MultipartFile file) throws IOException {
+    public R upload(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         uploadService.save(file);
-        log.info("文件保存成功");
+        return R.success("文件保存成功");
     }
 
 }

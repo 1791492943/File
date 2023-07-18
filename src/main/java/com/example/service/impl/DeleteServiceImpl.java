@@ -1,12 +1,16 @@
 package com.example.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.config.ConfigProperties;
 import com.example.domain.entity.FileEntity;
+import com.example.domain.entity.FileInfo;
 import com.example.domain.entity.Operate;
 import com.example.globalException.exception.ServiceException;
+import com.example.mapper.UploadMapper;
 import com.example.service.FileService;
 import com.example.service.OperateService;
+import com.example.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,14 +91,23 @@ public class DeleteServiceImpl implements FileService {
 
         if (file.isFile()) {
             String uuid = UUID.randomUUID().toString();
-            String suffix = file.getName().substring(file.getName().lastIndexOf("."));
-            file.renameTo(new File(configProperties.getDeletePath() + "\\" + uuid + suffix));
+            String newName = "";
+
+            if(file.getName().contains(".")){
+                String suffix = file.getName().substring(file.getName().lastIndexOf("."));
+                file.renameTo(new File(configProperties.getDeletePath() + "\\" + uuid + suffix));
+                newName = uuid + suffix;
+            }else{
+                file.renameTo(new File(configProperties.getDeletePath() + "\\" + uuid));
+                newName = uuid;
+            }
+
             Operate operate = Operate.builder()
                     .userId(loginIdAsInt)
                     .createDate(new Timestamp(System.currentTimeMillis()))
                     .behavior(1)
                     .file(file.getAbsolutePath())
-                    .event(uuid + suffix)
+                    .event(newName)
                     .build();
             operateService.save(operate);
         }

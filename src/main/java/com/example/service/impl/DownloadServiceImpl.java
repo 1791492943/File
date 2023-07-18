@@ -63,7 +63,8 @@ public class DownloadServiceImpl implements DownloadService {
         if (!file.exists()) return;
 
         //去掉下载路径，只保留前端所看到的样子
-        String filePathName = s.replace(configProperties.getPath() + "\\" + configProperties.getDownloadPath() + "\\", "");
+        String re = configProperties.getDownloadPath() + "\\";
+        String filePathName = s.replace(re, "");
 
         zipOutputStream.putNextEntry(new ZipEntry(filePathName));
         BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(s));

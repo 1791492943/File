@@ -1,11 +1,15 @@
 package com.example.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckRole;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.aop.annotation.PathCheck;
 import com.example.common.R;
 import com.example.config.ConfigProperties;
 import com.example.domain.entity.FileEntity;
 import com.example.domain.dto.FileEntityDto;
+import com.example.domain.entity.Operate;
+import com.example.service.OperateService;
 import com.example.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +32,9 @@ public class SelectFileController {
 
     @Autowired
     private ConfigProperties configProperties;
+
+    @Autowired
+    private OperateService operateService;
 
     /**
      * 查询初始目录文件
@@ -55,13 +62,14 @@ public class SelectFileController {
     @GetMapping("/directory")
     @PathCheck
     public R<List<FileEntity>> selectFile(String directory, HttpServletRequest request) {
-        log.info("{} 查看 {} 目录下的文件", Utils.getIp(request), directory);
+        log.info("{} 查看 {} 目录下的文件", Utils.getIp(request), directory.replace("/", "\\"));
         List<FileEntity> directoryFile = Utils.getDirectoryFile(directory);
         return R.success(directoryFile);
     }
 
     /**
      * 搜索文件
+     *
      * @param fuzzyQuery
      * @return
      */
@@ -77,15 +85,22 @@ public class SelectFileController {
                 .filter(item -> {
                     String itemToLow = item.getName().toLowerCase();
                     String fuzzyQueryToLow = fuzzyQuery.toLowerCase();
-                    return itemToLow.contains(fuzzyQueryToLow);})
+                    return itemToLow.contains(fuzzyQueryToLow);
+                })
                 .collect(Collectors.toList());
         return R.success(fileEntities);
     }
 
     @SaCheckPermission("admin:moveFile")
     @GetMapping("/upload")
-    public R selectUpload(){
+    public R<FileEntityDto> selectUpload() {
         List<FileEntity> directoryFile = Utils.getDirectoryFile(configProperties.getUploadPath());
-        return R.success(directoryFile);
+
+        FileEntityDto fileEntityDto = new FileEntityDto();
+        fileEntityDto.setList(directoryFile);
+        fileEntityDto.setRootPath(configProperties.getUploadPath());
+
+        return R.success(fileEntityDto);
     }
+
 }

@@ -125,7 +125,7 @@ public class Utils {
 
         response.reset();
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("Content-Disposition", "attachment; filename="+ "download" + filePath.substring(filePath.lastIndexOf(".")));
+//        response.setHeader("Content-Disposition", "attachment; filename="+ "download" + filePath.substring(filePath.lastIndexOf(".")));
         response.setContentType("application/octet-stream");
         response.addHeader("Content-Length", "" + new File(filePath).length());
         byte[] bytes = new byte[8192];
