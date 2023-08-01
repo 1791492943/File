@@ -1,9 +1,9 @@
-package com.example.domain.vo;
+package com.example.domain.dto;
 
 import lombok.Data;
 
 @Data
-public class LoginVo {
+public class LoginDto {
 
     private String account;
     private String password;

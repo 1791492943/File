@@ -1,7 +1,7 @@
 package com.example.service.impl;
 
 import com.example.domain.entity.User;
-import com.example.domain.vo.LoginVo;
+import com.example.domain.dto.LoginDto;
 import com.example.globalException.exception.LoginException;
 import com.example.mapper.LoginMapper;
 import com.example.service.LoginService;
@@ -17,8 +17,8 @@ public class LoginServiceImpl implements LoginService {
     private LoginMapper loginMapper;
 
     @Override
-    public User login(LoginVo loginVo) {
-        User user = loginMapper.login(loginVo);
+    public User login(LoginDto loginDto) {
+        User user = loginMapper.login(loginDto);
 
         if (Objects.isNull(user)){
             throw new LoginException("登录失败,账号或密码错误");
