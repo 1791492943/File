@@ -2,10 +2,12 @@ package com.example.controller;
 
 import com.example.aop.annotation.PathCheck;
 import com.example.common.R;
+import com.example.config.ConfigProperties;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,9 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/onlinePreview")
 public class OnlinePreviewController {
+
+    @Autowired
+    private ConfigProperties configProperties;
 
     @GetMapping("/text")
     @PathCheck
@@ -74,8 +79,8 @@ public class OnlinePreviewController {
 
         // 移动访问指针到指定位置
         randomAccessFile.seek(range);
-        // 每次请求只返回1MB的视频流
-        byte[] bytes = new byte[1024 * 1024];
+        // 每次请求只返回5MB的视频流
+        byte[] bytes = new byte[1024 * 1024 * configProperties.getSize()];
         int len = randomAccessFile.read(bytes);
         //设置此次相应返回的数据长度
         response.setContentLength(len);

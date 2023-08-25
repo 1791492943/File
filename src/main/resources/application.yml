@@ -35,6 +35,8 @@ project:
   downloadService: true
   # 公告内容
   announcement: 公告内容
+  # 在线预览一次传输大小 MB
+  size: 5
 
 logging:
   file:

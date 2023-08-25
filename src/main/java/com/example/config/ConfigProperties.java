@@ -17,6 +17,7 @@ public class ConfigProperties {
     private String uploadService;
     private String downloadService;
     private String announcement;
+    private Integer size;
 
     public String getUploadPath() {
         return path + "\\" + uploadPath;
