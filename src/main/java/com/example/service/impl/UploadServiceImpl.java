@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Service
 @Slf4j
@@ -66,6 +68,7 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper,FileInfo> implem
                 .size(file.getSize())
                 .suffix(suffix)
                 .uploadUser(Integer.parseInt(StpUtil.getLoginIdAsString()) - 10000)
+                .uploadDate(new Date())
                 .hashValue(fileMd5)
                 .build();
 

@@ -3,6 +3,8 @@ package com.example.domain.entity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @Builder
 public class FileInfo {
@@ -13,7 +15,7 @@ public class FileInfo {
     private String filePath;
     private Long size;
     private String suffix;
-    private String uploadDate;
+    private Date uploadDate;
     private Integer uploadUser;
     private String hashValue;
 
